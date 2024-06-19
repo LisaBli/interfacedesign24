@@ -11,6 +11,7 @@ class SoundCanvasApp {
     };
     private selectedSounds: { [key: string]: string } = {};
     private currentPage: HTMLElement;
+    private selectedShape: HTMLElement | null = null;
 
     constructor() {
         this.currentPage = document.getElementById('start-page') as HTMLElement;
@@ -19,6 +20,16 @@ class SoundCanvasApp {
         document.getElementById('next-to-board-button')?.addEventListener('click', () => this.handleButtonClick('board-page'));
         document.getElementById('save-button')?.addEventListener('click', () => this.handleButtonClick('save'));
         document.getElementById('new-button')?.addEventListener('click', () => this.handleButtonClick('new'));
+
+        const soundButtons = document.querySelectorAll('.sound-button');
+        soundButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const sound = (button as HTMLElement).dataset.sound;
+                if (this.selectedShape && sound) {
+                    this.assignSound(this.selectedShape, sound);
+                }
+            });
+        });
 
         this.initShapes();
     }
@@ -31,50 +42,51 @@ class SoundCanvasApp {
         this.currentPage.classList.add('visible');
     }
 
-   //Formen generieren 
     private initShapes() {
         const shapeContainer = document.getElementById('shape-container') as HTMLElement;
 
         const shapeClasses = [
             'circle', 'square', 'triangle', 'half-circle', 'trapezoid',
-            'parallelogram', 'rectangle', 'quarter-circle', 'long-rectangle'
+            'rectangle', 'quarter-circle', 'long-rectangle'
         ];
 
         shapeClasses.forEach(shapeClass => {
             const shape = document.createElement('div');
             shape.classList.add('shape', shapeClass);
-            shape.dataset.shape = shapeClass; // Add this line to store the shape type
-            shape.addEventListener('click', () => this.assignSound(shape));
+            shape.dataset.shape = shapeClass; // Store the shape type
+            shape.addEventListener('click', () => this.selectShape(shape));
             shapeContainer.appendChild(shape);
             this.shapes.push(shape);
         });
     }
 
-    //Sounds Zuordnung 
-    private assignSound(shape: HTMLElement) {
-        const sound = prompt('Bitte wähle einen Ton (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday):');
-        if (sound && this.sounds[sound]) {
-            this.selectedSounds[shape.dataset.shape as string] = this.sounds[sound];
-            shape.style.backgroundColor = this.getRandomColor();
-            this.playFeedbackSound(); // spielt feedback sound nach Zuweisung eines Sounds
-        }
+    private selectShape(shape: HTMLElement) {
+        this.selectedShape = shape;
     }
 
-    //Formen 
+    private assignSound(shape: HTMLElement, sound: string) {
+        this.selectedSounds[shape.dataset.shape as string] = this.sounds[sound];
+        shape.style.backgroundColor = this.getRandomColor();
+        shape.classList.add('assigned');
+        this.playFeedbackSound(); // Feedback-Sound abspielen
+    }
+
     private showBoard() {
         const boardContainer = document.getElementById('board-container') as HTMLElement;
-        boardContainer.innerHTML = ''; // board container leeren
+        boardContainer.innerHTML = ''; // Board Container leeren
 
         this.shapes.forEach(shape => {
             const boardShape = shape.cloneNode(true) as HTMLElement;
-            boardShape.addEventListener('click', () => this.playSound(boardShape));
+            if (this.selectedSounds[shape.dataset.shape as string]) {
+                boardShape.addEventListener('click', () => this.playSound(boardShape));
+                boardShape.classList.add('assigned');
+            }
             boardContainer.appendChild(boardShape);
         });
 
         this.showPage('board-page');
     }
 
-    //spielt Sounds ab
     private playSound(shape: HTMLElement) {
         const sound = this.selectedSounds[shape.dataset.shape as string];
         if (sound) {
@@ -83,15 +95,13 @@ class SoundCanvasApp {
         }
     }
 
-    //Button Sound Feedback
     private playFeedbackSound() {
         const feedbackSound = new Audio("./assets/click-button.mp3");
         feedbackSound.play();
     }
 
-    //Fkt. Button click
     private handleButtonClick(action: string) {
-        this.playFeedbackSound(); // Play feedback sound on button click
+        this.playFeedbackSound(); // Feedback-Sound bei Klick abspielen
 
         if (action === 'shape-page') {
             this.showPage('shape-page');
@@ -104,7 +114,6 @@ class SoundCanvasApp {
         }
     }
 
-    //Fkt. random Farbe generieren
     private getRandomColor() {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -116,10 +125,9 @@ class SoundCanvasApp {
 
     private saveSong() {
         alert('Song gespeichert!');
-        // Fkt zum Speichern und Herunterladen des Songs 
+        // Hier implementiere die Funktion zum Speichern und Herunterladen des Songs
     }
 
-    //Neustart
     private resetApp() {
         location.reload();
     }

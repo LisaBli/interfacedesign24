@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoundCanvas</title>
-    <link rel="stylesheet" href="stylesheet.css">
-    <script src="interface.js" type="module"></script>
-</head>
-<body>
-    <div id="app">
-        <div id="start-page" class="page visible">
-            <h1>SoundCanvas</h1>
-            <p>Erstelle dein eigenes synästhetisches Soundboard durch Zuordnung von Farben, Formen und Tönen.</p>
-            <button id="start-button" class="primary-button">Starten</button>
+<head><!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SoundCanvas</title>
+        <link rel="stylesheet" href="stylesheet.css">
+        <script src="interface.js" type="module"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div id="start-page" class="page visible">
+                <h1>SoundCanvas</h1>
+                <p>Erstelle dein eigenes synästhetisches Soundboard durch Zuordnung von Farben, Formen und Tönen.</p>
+                <button id="start-button" class="primary-button">Starten</button>
+            </div>
+            <div id="shape-page" class="page hidden">
+                <h2>Ordne den Formen durch einen "click" verschiedene Töne zu</h2>
+                <div id="shape-container"></div>
+                <div id="sound-buttons" class="sound-buttons">
+                    <button class="sound-button" data-sound="Monday">Monday</button>
+                    <button class="sound-button" data-sound="Tuesday">Tuesday</button>
+                    <button class="sound-button" data-sound="Wednesday">Wednesday</button>
+                    <button class="sound-button" data-sound="Thursday">Thursday</button>
+                    <button class="sound-button" data-sound="Friday">Friday</button>
+                    <button class="sound-button" data-sound="Saturday">Saturday</button>
+                    <button class="sound-button" data-sound="Sunday">Sunday</button>
+                </div>
+                <button id="next-to-board-button" class="primary-button">Weiter</button>
+            </div>
+            <div id="board-page" class="page hidden">
+                <h2>Dein synästhetisches Soundboard</h2>
+                <div id="board-container"></div>
+                <button id="save-button" class="primary-button">Speichern</button>
+                <button id="new-button" class="secondary-button">Neuer Song</button>
+            </div>
         </div>
-        <div id="shape-page" class="page hidden">
-            <h2>Ordne den Formen durch einen "click" verschiedene Töne zu</h2>
-            <div id="shape-container"></div>
-            <button id="next-to-board-button" class="primary-button">Weiter</button>
-        </div>
-        <div id="board-page" class="page hidden">
-            <h2>Dein synästhetisches Soundboard</h2>
-            <div id="board-container"></div>
-            <button id="save-button" class="primary-button">Speichern</button>
-            <button id="new-button" class="secondary-button">Neuer Song</button>
-        </div>
-    </div>
+        <script src="app.js" type="module"></script>
+    </body>
+    </html>
     
-</body>
-</html>
 
