@@ -1,11 +1,13 @@
 class SoundCanvasApp {
     private shapes: HTMLElement[] = [];
     private sounds: { [key: string]: string } = {
-        "A": "/mnt/data/A.mp3",
-        "C": "/mnt/data/C.mp3",
-        "Kick": "/mnt/data/kick.mp3",
-        "Laugh 1": "/mnt/data/laugh-1.mp3",
-        "Laugh 2": "/mnt/data/laugh-2.mp3"
+        "Monday": "./assets/monday.mp3",
+        "Tuesday": "./assets/tuesday.mp3",
+        "Wednesday": "./assets/wednesday.mp3",
+        "Thursday": "./assets/thursday.mp3",
+        "Friday": "./assets/friday.mp3",
+        "Saturday": "./assets/saturday.mp3",
+        "Sunday": "./assets/sunday.mp3"
     };
     private selectedSounds: { [key: string]: string } = {};
     private currentPage: HTMLElement;
@@ -13,10 +15,10 @@ class SoundCanvasApp {
     constructor() {
         this.currentPage = document.getElementById('start-page') as HTMLElement;
 
-        document.getElementById('start-button')?.addEventListener('click', () => this.showPage('shape-page'));
-        document.getElementById('next-to-board-button')?.addEventListener('click', () => this.showBoard());
-        document.getElementById('save-button')?.addEventListener('click', () => this.saveSong());
-        document.getElementById('new-button')?.addEventListener('click', () => this.resetApp());
+        document.getElementById('start-button')?.addEventListener('click', () => this.handleButtonClick('shape-page'));
+        document.getElementById('next-to-board-button')?.addEventListener('click', () => this.handleButtonClick('board-page'));
+        document.getElementById('save-button')?.addEventListener('click', () => this.handleButtonClick('save'));
+        document.getElementById('new-button')?.addEventListener('click', () => this.handleButtonClick('new'));
 
         this.initShapes();
     }
@@ -29,6 +31,7 @@ class SoundCanvasApp {
         this.currentPage.classList.add('visible');
     }
 
+   //Formen generieren 
     private initShapes() {
         const shapeContainer = document.getElementById('shape-container') as HTMLElement;
 
@@ -47,17 +50,20 @@ class SoundCanvasApp {
         });
     }
 
+    //Sounds Zuordnung 
     private assignSound(shape: HTMLElement) {
-        const sound = prompt('Bitte wähle einen Ton (A, C, Kick, Laugh 1, Laugh 2):');
+        const sound = prompt('Bitte wähle einen Ton (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday):');
         if (sound && this.sounds[sound]) {
             this.selectedSounds[shape.dataset.shape as string] = this.sounds[sound];
             shape.style.backgroundColor = this.getRandomColor();
+            this.playFeedbackSound(); // spielt feedback sound nach Zuweisung eines Sounds
         }
     }
 
+    //Formen 
     private showBoard() {
         const boardContainer = document.getElementById('board-container') as HTMLElement;
-        boardContainer.innerHTML = ''; // Clear the board container
+        boardContainer.innerHTML = ''; // board container leeren
 
         this.shapes.forEach(shape => {
             const boardShape = shape.cloneNode(true) as HTMLElement;
@@ -68,6 +74,7 @@ class SoundCanvasApp {
         this.showPage('board-page');
     }
 
+    //spielt Sounds ab
     private playSound(shape: HTMLElement) {
         const sound = this.selectedSounds[shape.dataset.shape as string];
         if (sound) {
@@ -76,6 +83,28 @@ class SoundCanvasApp {
         }
     }
 
+    //Button Sound Feedback
+    private playFeedbackSound() {
+        const feedbackSound = new Audio("./assets/click-button.mp3");
+        feedbackSound.play();
+    }
+
+    //Fkt. Button click
+    private handleButtonClick(action: string) {
+        this.playFeedbackSound(); // Play feedback sound on button click
+
+        if (action === 'shape-page') {
+            this.showPage('shape-page');
+        } else if (action === 'board-page') {
+            this.showBoard();
+        } else if (action === 'save') {
+            this.saveSong();
+        } else if (action === 'new') {
+            this.resetApp();
+        }
+    }
+
+    //Fkt. random Farbe generieren
     private getRandomColor() {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -87,9 +116,10 @@ class SoundCanvasApp {
 
     private saveSong() {
         alert('Song gespeichert!');
-        // Hier kannst du die Logik zum Speichern und Herunterladen des Songs hinzufügen
+        // Fkt zum Speichern und Herunterladen des Songs 
     }
 
+    //Neustart
     private resetApp() {
         location.reload();
     }

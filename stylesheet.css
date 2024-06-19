@@ -1,23 +1,32 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #121212;
+    color: #ffffff;
 }
 
 #app {
     text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
 }
 
 .page {
     display: none;
+    padding: 20px;
 }
 
 .page.visible {
     display: block;
+}
+
+h1, h2 {
+    color: #ffffff;
 }
 
 .shape {
@@ -27,6 +36,11 @@ body {
     display: inline-block;
     background-color: grey;
     cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.shape:hover {
+    transform: scale(1.1);
 }
 
 .shape.circle {
@@ -92,6 +106,30 @@ button {
     padding: 10px 20px;
     margin-top: 20px;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button.primary-button {
+    background-color: #1DB954;
+    color: #ffffff;
+    transition: background-color 0.2s;
+}
+
+button.primary-button:hover {
+    background-color: #1ed760;
+}
+
+button.secondary-button {
+    background-color: #535353;
+    color: #ffffff;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+}
+
+button.secondary-button:hover {
+    background-color: #666666;
 }
 
 .hidden {
