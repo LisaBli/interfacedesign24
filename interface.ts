@@ -34,6 +34,7 @@ class SoundCanvasApp {
         this.initShapes();
     }
 
+    //zeigt jew. Seite
     private showPage(pageId: string) {
         this.currentPage.classList.remove('visible');
         this.currentPage.classList.add('hidden');
@@ -42,18 +43,19 @@ class SoundCanvasApp {
         this.currentPage.classList.add('visible');
     }
 
+    //erzeugt Formen
     private initShapes() {
         const shapeContainer = document.getElementById('shape-container') as HTMLElement;
 
         const shapeClasses = [
             'circle', 'square', 'triangle', 'half-circle', 'trapezoid',
-            'rectangle', 'quarter-circle', 'long-rectangle'
+            'quarter-circle', 'long-rectangle', 'pentagon'
         ];
 
         shapeClasses.forEach(shapeClass => {
             const shape = document.createElement('div');
             shape.classList.add('shape', shapeClass);
-            shape.dataset.shape = shapeClass; // Store the shape type
+            shape.dataset.shape = shapeClass; 
             shape.addEventListener('click', () => this.selectShape(shape));
             shapeContainer.appendChild(shape);
             this.shapes.push(shape);
@@ -64,6 +66,7 @@ class SoundCanvasApp {
         this.selectedShape = shape;
     }
 
+    //Sound zuordnen zu Formen
     private assignSound(shape: HTMLElement, sound: string) {
         this.selectedSounds[shape.dataset.shape as string] = this.sounds[sound];
         shape.style.backgroundColor = this.getRandomColor();
@@ -71,6 +74,7 @@ class SoundCanvasApp {
         this.playFeedbackSound(); // Feedback-Sound abspielen
     }
 
+    //zeigt Soundboard
     private showBoard() {
         const boardContainer = document.getElementById('board-container') as HTMLElement;
         boardContainer.innerHTML = ''; // Board Container leeren
@@ -87,6 +91,7 @@ class SoundCanvasApp {
         this.showPage('board-page');
     }
 
+    //spielt Sound 
     private playSound(shape: HTMLElement) {
         const sound = this.selectedSounds[shape.dataset.shape as string];
         if (sound) {
@@ -95,11 +100,13 @@ class SoundCanvasApp {
         }
     }
 
+    //Sound für Buttonclicks 
     private playFeedbackSound() {
         const feedbackSound = new Audio("./assets/click-button.mp3");
         feedbackSound.play();
     }
 
+    //Fkt. für Button clicks 
     private handleButtonClick(action: string) {
         this.playFeedbackSound(); // Feedback-Sound bei Klick abspielen
 
@@ -114,6 +121,7 @@ class SoundCanvasApp {
         }
     }
 
+    //generiert random Farbe 
     private getRandomColor() {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -123,11 +131,12 @@ class SoundCanvasApp {
         return color;
     }
 
+    //speichern des songs
     private saveSong() {
         alert('Song gespeichert!');
-        // Hier implementiere die Funktion zum Speichern und Herunterladen des Songs
     }
 
+    //resetet die Anwendung
     private resetApp() {
         location.reload();
     }
