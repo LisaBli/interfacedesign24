@@ -118,6 +118,7 @@ class SoundCanvasApp {
     //speichern des songs
     saveSong() {
         alert('Song gespeichert!');
+        //funktion speichern hat die Anwendung blockiert, deswegen in diesem Prototyp nur ein alert
     }
     //resetet die Anwendung
     resetApp() {
